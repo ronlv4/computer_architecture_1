@@ -3,4 +3,4 @@ project(computer_architecture_1 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(computer_architecture_1 main.c)
+add_executable(computer_architecture_1 main_task1Assignment1.c)
