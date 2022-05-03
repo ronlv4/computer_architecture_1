@@ -1,3 +1,6 @@
+extern printf
+extern c_checkValidity
+
 section .data                    	; we define (global) initialized variables in .data section
         an: dd 0              		; an is a local variable of size double-word, we use it to count the string characters
 
@@ -19,10 +22,10 @@ myCode:
         mov [an], eax;
         cmp byte [an], 0;
         je negative;
-        shl [an], 2;
+        shl dword [an], 2;
         jmp print;
 negative:
-        shl [an], 3;
+        shl dword [an], 3;
 print:
         mov al, [an];
         call printf;

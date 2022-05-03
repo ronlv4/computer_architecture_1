@@ -1,0 +1,37 @@
+     1                                  extern printf
+     2                                  extern c_checkValidity
+     3                                  
+     4                                  section .data                    	; we define (global) initialized variables in .data section
+     5 00000000 00000000                        an: dd 0              		; an is a local variable of size double-word, we use it to count the string characters
+     6                                  
+     7                                  section .text                    	; we write code in .text section
+     8                                          global assFunc         		; 'global' directive causes the function do_Str(...) to appear in global scope
+     9                                  
+    10                                  assFunc:                       		; do_Str function definition - functions are defined as labels
+    11 00000000 55                              push ebp              		; save Base Pointer (bp) original value
+    12 00000001 89E5                            mov ebp, esp         		; use Base Pointer to access stack contents (do_Str(...) activation frame)
+    13 00000003 60                              pushad                   	; push all signficant registers onto stack (backup registers values)
+    14 00000004 8B4D08                          mov ecx, dword [ebp+8]		; get function argument on stack
+    15                                  				                	; now ecx register points to the input string
+    16                                  	                       			; use label to build a loop for treating the input string characters
+    17                                  
+    18                                  myCode:
+    19 00000007 60                              pushad;                      ;backup registers
+    20 00000008 51                              push ecx;                    ; push first argument of function c_checkValidity
+    21 00000009 E8(00000000)                    call c_checkValidity;
+    22 0000000E A3[00000000]                    mov [an], eax;
+    23 00000013 803D[00000000]00                cmp byte [an], 0;
+    24 0000001A 7409                            je negative;
+    25 0000001C C125[00000000]02                shl dword [an], 2;
+    26 00000023 EB07                            jmp print;
+    27                                  negative:
+    28 00000025 C125[00000000]03                shl dword [an], 3;
+    29                                  print:
+    30 0000002C A0[00000000]                    mov al, [an];
+    31 00000031 E8(00000000)                    call printf;
+    32                                  
+    33 00000036 61                              popad                    	; restore all previously used registers
+    34 00000037 A1[00000000]                    mov eax,[an]         		; return an (returned values are in eax)
+    35 0000003C 89EC                            mov esp, ebp			; free function activation frame
+    36 0000003E 5D                              pop ebp				; restore Base Pointer previous value (to returnt to the activation frame of main(...))
+    37 0000003F C3                              ret				; returns from do_Str(...) function
