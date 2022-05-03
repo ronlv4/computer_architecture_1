@@ -9,9 +9,8 @@ char c_checkValidity(int x){
 
 int main(int argc, char** argv) {
     int user_input;
-    printf("please enter a decimal number: \n");
     scanf("%d", &user_input);
-    extern void assFunc(int);
+    extern int assFunc(int);
     assFunc(user_input);
     return 0;
 }

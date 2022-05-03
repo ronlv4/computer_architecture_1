@@ -1,31 +1,40 @@
-; Define printf as an external function
-extern	printf
+extern printf
+extern c_checkValidity
 
-SECTION .DATA
-    msg:	db "Hello world", 0 ; Zero is Null terminator 
-    fmt:    db "%s", 10, 0 ; printf format string follow by a newline(10) and a null terminator(0), "\n",'0'
+section .bss
+	result: resd 1
 
-SECTION .TEXT
-    global assFunc
+section .data
+	fmt:    db "%d", 10, 0 ; printf format string follow by a newline(10) and a null terminator(0), "\n",'0'
+
+section .text
+	global assFunc
     
 assFunc:
-    push ebp 
-    mov eax, dword [ebp+8]
-    call myPrint
+	push ebp
+	mov ebp, esp
 
+	mov eax, dword [ebp+8]
+	mov [result], eax
+	push eax
+	call c_checkValidity
+	add esp, 4
+
+	cmp eax, 0
+	je negative
+	shl dword [result], 2
+	jmp print
+negative:
+	shl dword [result], 3
+print:
+	push dword [result]
+	push fmt
+	mov al, 0
+	call printf
+	add esp, 8
 
 end:
-    pop ebp
-    mov eax, 0
-    ret
-
-myPrint:
-    push ebp
-
-    mov	edi,fmt
-    mov	esi,msg
-    mov	eax,0
-    call printf
-
-    pop ebp
-    ret
+	mov esp, ebp
+	pop ebp
+	mov eax, 0
+	ret

@@ -9,7 +9,7 @@ OBJ_DIR		:=	obj
 LIST_DIR	:=	list
 BIN_DIR		:=	bin
 
-all: clean task1 # task2
+all: task1 # task2
 
 task1:	$(OBJ_DIR)/main_task1Assignment1.o $(OBJ_DIR)/asm_task1Assignment1.o
 	$(CC) -o $(BIN_DIR)/main_tasl1Assignment1.bin $(OBJ_DIR)/main_task1Assignment1.o $(OBJ_DIR)/asm_task1Assignment1.o
